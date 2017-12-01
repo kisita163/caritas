@@ -1,0 +1,28 @@
+[
+  {
+      "name" : "Identification, démographie et éducation du ménage",
+      "questions" :
+      [
+        {
+        "text":"Sexe du chef de ménage",
+        "values":["Masculin","Féminin"]
+        },
+        {
+          "text":"Quel est le niveau d'instruction du chef de ménage",
+          "values":["analphabet","primaire","secondaire","supérieur"]
+        },
+        {
+          "text":"Quel est le niveau d’instruction le plus élevé atteint par un autre membre du ménage",
+          "values":["analphabet","primaire","secondaire","supérieur"]
+        },
+        {
+          "text":"Quel est le Statut Matrimonial du chef de ménage",
+          "values":["Célibataire","Marié (Monogame)","Marié (Polygame)","Divorcé","Veuf","Autre"]
+        },
+        {
+        "text":"Quel est le statut d’occupation de l’habitation",
+        "values":["propriétaire","Propriété familliale","Locataire","Logé gratuitement","Autre (à préciser)"]
+        }
+      ]
+  }
+]
