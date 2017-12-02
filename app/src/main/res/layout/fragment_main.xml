@@ -27,7 +27,7 @@
         android:layout_below="@id/section_label"
         android:layout_marginBottom="@dimen/pad_10dp"
         android:layout_marginTop="@dimen/pad_10dp"
-        android:background="@color/main_black_lt" />
+        android:background="@color/main_black" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"
