@@ -1,5 +1,6 @@
 package com.kisita.caritas;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,8 +24,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PublishFragment.OnPublishInteractionListener {
 
     private final static String TAG = "MainActivity";
     /**
@@ -32,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private ArrayList<Section> Sections =  new ArrayList<>();
+
+    /* UI button
+     */
+
 
     private SectionPagerAdapter mSectionPagerAdapter;
 
@@ -152,5 +163,45 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+
+    public void printFinalSections(){
+        for(Section s : Sections){
+            Log.i(TAG,s.getName());
+            for(Question q : s.getQuestions()){
+                Log.i(TAG,q.getQuestion());
+                Log.i(TAG,"-->" + q.getChoice());
+            }
+        }
+    }
+
+    @Override
+    public void onPublishInteraction() {
+        Log.i(TAG,"Publish pressed");
+        //printFinalSections();
+        String key = getDb("survey").push().getKey();
+        Map<String, Object> childUpdates = new HashMap<>();
+        int i = 1;
+        int j = 1;
+
+        for(Section s : Sections){
+            childUpdates.put(getUid() + "/" + key + "/section_"+j+"/name",s.getName());
+            for(Question q : s.getQuestions()){
+                childUpdates.put(getUid() + "/" + key +  "/section_"+j+"/question"+ i +"/text" , q.getQuestion());
+                childUpdates.put(getUid() + "/" + key +  "/section_"+j+"/question"+ i +"/choice" , q.getChoice());
+                i++;
+            }
+            j++;
+        }
+        getDb("survey").updateChildren(childUpdates);
+    }
+
+    public DatabaseReference getDb(String reference) {
+        return FirebaseDatabase.getInstance().getReference(reference);
+    }
+
+    public String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
     }
 }

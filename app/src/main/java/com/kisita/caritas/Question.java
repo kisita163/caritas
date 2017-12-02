@@ -35,4 +35,8 @@ public class Question implements Serializable {
     public ArrayList<String> getChoices() {
         return choices;
     }
+
+    public String getChoice() {
+        return choice;
+    }
 }

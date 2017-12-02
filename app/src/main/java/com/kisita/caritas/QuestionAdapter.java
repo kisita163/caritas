@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -36,12 +37,25 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
 
     @Override
     public void onBindViewHolder(QuestionAdapter.ViewHolder holder, int position) {
-        Question d = mQuestions.get(position);
+        final Question d = mQuestions.get(position);
         holder.mQuestion.setText(position + 1 + ". " + d.getQuestion());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, d.getChoices());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         holder.mValues.setAdapter(adapter);
+
+        holder.mValues.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i(TAG,"item selected ..." + d.getChoices().get(i));
+                d.setChoice(d.getChoices().get(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override

@@ -33,6 +33,10 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
+        if(position == survey.size()) {
+            Log.i(TAG,"Here we go man");
+            return PublishFragment.newInstance();
+        }
         return PlaceholderFragment.newInstance(survey.get(position));
     }
 
@@ -40,7 +44,7 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         if(survey == null)
             return 0;
-        return survey.size();
+        return (survey.size() + 1);
     }
 
     @Override
