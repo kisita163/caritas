@@ -3,30 +3,26 @@ package com.kisita.caritas;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final static String TAG = "MainActivity";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -35,41 +31,31 @@ public class MainActivity extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ArrayList<Section> Sections =  new ArrayList<>();
+
+    private SectionPagerAdapter mSectionPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
 
-    /**
-       JSON Array holding the survey
-     */
-    private JSONArray jsonArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        try {
-            jsonArray = new JSONArray(readSurveyFromResources());
-        }catch (JSONException e){
-            //TODO Exceptions handling
-            e.printStackTrace();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        //
+        populateSections();
+        // Create the adapter that will return a fragment for each section of the survey
+        mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(),Sections);
+        mViewPager.setAdapter(mSectionPagerAdapter);
     }
 
 
@@ -96,42 +82,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-
-    /**
      * @return Survey's sections and questions from json file
      * @throws IOException
      */
@@ -141,47 +91,66 @@ public class MainActivity extends AppCompatActivity {
         InputStream rawCategories = getResources().openRawResource(R.raw.survey);
         BufferedReader reader = new BufferedReader(new InputStreamReader(rawCategories));
         String line;
-
+        Log.i(TAG,"Reading line ...");
         while ((line = reader.readLine()) != null) {
+            Log.i(TAG,"New line  : "+line);
             surveyJson.append(line);
         }
         return surveyJson.toString();
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    // Create array of sections
+    private void populateSections() {
+        JSONArray jsonSurvey = null;
+        JSONArray jsonQuestions = null;
+        JSONObject section;
+        JSONObject question;
+        JSONArray  values   = null;
+        Section sec;
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+        try {
+            jsonSurvey = new JSONArray(readSurveyFromResources());
+            for (int i = 0; i < jsonSurvey.length(); i++) {
+                // Get section
+                section = jsonSurvey.getJSONObject(i);
+                Log.i(TAG,"Section name is : "+ section.getString("name"));
+                sec     = new Section(section.getString("name"));
 
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
+                jsonQuestions = section.getJSONArray("questions");
 
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
+                Question  q = null;
+                for(int k = 0 ; k < jsonQuestions.length() ; k++){
+                    question = jsonQuestions.getJSONObject(k);
+                    // Get Question object
+                    q  = new Question(question.getString("text"));
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
+                    values = question.getJSONArray("values");
+                    for(int j = 0; j < values.length() ; j++){
+                        //Log.i(TAG,"value "+ j +" : "+ values.get(j));
+                        q.addChoice(values.get(j).toString());
+                    }
+                    sec.addNewQuestion(q);
+                }
+                Sections.add(sec);
             }
-            return null;
+        }catch (JSONException e){
+            //TODO Exceptions handling
+            e.printStackTrace();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        printSections();
+    }
+
+    public void printSections(){
+        for(Section s : Sections){
+            Log.i(TAG,s.getName());
+            for(Question q : s.getQuestions()){
+                Log.i(TAG,q.getQuestion());
+                for (String c : q.getChoices()){
+                    Log.i(TAG,c);
+                }
+            }
         }
     }
 }
