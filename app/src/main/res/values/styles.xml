@@ -25,6 +25,22 @@
         <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
 
+
+
+    <style name="btn" parent="android:Widget.Holo.Light.Button">
+        <item name="android:minHeight">1dp</item>
+        <item name="android:minWidth">1dp</item>
+        <item name="android:foreground">?android:selectableItemBackground</item>
+        <item name="android:colorBackground">@color/white_text</item>
+    </style>
+
+    <style name="button" parent="@style/btn">
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:padding">@dimen/pad_10dp</item>
+        <item name="android:textColor">@color/white_text</item>
+        <item name="android:textSize">@dimen/txt_15sp</item>
+    </style>
+
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
     </style>
