@@ -1,9 +1,8 @@
 package com.kisita.caritas;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements PublishFragment.OnPublishInteractionListener {
+public class MainActivity extends AppCompatActivity implements PublishFragment.OnPublishInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener, InvestigatorFragment.OnInvestigatorInteractionListener {
 
     private final static String TAG = "MainActivity";
     /**
@@ -67,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         // Create the adapter that will return a fragment for each section of the survey
         mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(),Sections);
         mViewPager.setAdapter(mSectionPagerAdapter);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(this);
     }
 
 
@@ -202,6 +203,28 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     }
 
     public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                mViewPager.setCurrentItem(0);
+                Log.i(TAG,"Home selected...");
+                return true;
+            case R.id.navigation_dashboard:
+                Log.i(TAG,"questions selected...");
+                return true;
+            case R.id.navigation_notifications:
+                Log.i(TAG,"notifications selected...");
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onInvestigatorInteraction() {
+
     }
 }
