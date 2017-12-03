@@ -6,12 +6,17 @@
         android:title="home" />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="questionnaires" />
+        android:id="@+id/navigation_previous"
+        android:icon="@drawable/ic_skip_previous_black_24dp"
+        android:title="précédent" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="alerte" />
+        android:id="@+id/navigation_next"
+        android:icon="@drawable/ic_skip_next_black_24dp"
+        android:title="suivant" />
+
+    <item
+        android:id="@+id/navigation_publish"
+        android:icon="@drawable/ic_send_black_24dp"
+        android:title="publier" />
 </menu>

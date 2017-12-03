@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +28,10 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements PublishFragment.OnPublishInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener, InvestigatorFragment.OnInvestigatorInteractionListener {
 
-    private final static String TAG = "MainActivity";
+    private final static String TAG      = "MainActivity";
+
+    private final static String SECTIONS = "sections";
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private ArrayList<Section> Sections =  new ArrayList<>();
+    private ArrayList<Section> mSections =  new ArrayList<>();
 
     /* UI button
      */
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    private ViewPager mViewPager;
+    private CaritasViewPager mViewPager;
 
 
     @Override
@@ -56,41 +59,19 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (CaritasViewPager) findViewById(R.id.container);
         //
-        populateSections();
+        if(savedInstanceState != null){
+            mSections = (ArrayList<Section>) savedInstanceState.getSerializable(SECTIONS);
+        }else{
+            populateSections();
+        }
         // Create the adapter that will return a fragment for each section of the survey
-        mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(),Sections);
+        mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager(), mSections);
         mViewPager.setAdapter(mSectionPagerAdapter);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -119,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         JSONObject question;
         JSONArray  values   = null;
         Section sec;
+        String s;
 
         try {
             jsonSurvey = new JSONArray(readSurveyFromResources());
@@ -135,15 +117,16 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
                     question = jsonQuestions.getJSONObject(k);
                     // Get Question object
                     q  = new Question(question.getString("text"));
-
+                    q.setEntryType(question.getString("type"));
                     values = question.getJSONArray("values");
-                    for(int j = 0; j < values.length() ; j++){
+                    q.addChoice("");
+                    for(int j = 1; j <= values.length() ; j++){
                         //Log.i(TAG,"value "+ j +" : "+ values.get(j));
-                        q.addChoice(values.get(j).toString());
+                        q.addChoice(values.get(j-1).toString());
                     }
                     sec.addNewQuestion(q);
                 }
-                Sections.add(sec);
+                mSections.add(sec);
             }
         }catch (JSONException e){
             //TODO Exceptions handling
@@ -151,11 +134,11 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         }catch(IOException e){
             e.printStackTrace();
         }
-        printSections();
+        //printSections();
     }
 
     public void printSections(){
-        for(Section s : Sections){
+        for(Section s : mSections){
             Log.i(TAG,s.getName());
             for(Question q : s.getQuestions()){
                 Log.i(TAG,q.getQuestion());
@@ -168,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
 
 
     public void printFinalSections(){
-        for(Section s : Sections){
+        for(Section s : mSections){
             Log.i(TAG,s.getName());
             for(Question q : s.getQuestions()){
                 Log.i(TAG,q.getQuestion());
@@ -186,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         int i = 1;
         int j = 1;
 
-        for(Section s : Sections){
+        for(Section s : mSections){
             childUpdates.put(getUid() + "/" + key + "/section_"+j+"/name",s.getName());
             for(Question q : s.getQuestions()){
                 childUpdates.put(getUid() + "/" + key +  "/section_"+j+"/question"+ i +"/text" , q.getQuestion());
@@ -208,16 +191,24 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int i;
+        mViewPager.setEnabled(false);
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 mViewPager.setCurrentItem(0);
-                Log.i(TAG,"Home selected...");
+                //Log.i(TAG,"Home selected...");
                 return true;
-            case R.id.navigation_dashboard:
-                Log.i(TAG,"questions selected...");
+            case R.id.navigation_previous:
+                i = mViewPager.getCurrentItem();
+                mViewPager.setCurrentItem(i-1);
+                //Log.i(TAG,"questions selected...");
                 return true;
-            case R.id.navigation_notifications:
-                Log.i(TAG,"notifications selected...");
+            case R.id.navigation_next:
+                switchRight();
+                return true;
+            case R.id.navigation_publish:
+                mViewPager.setCurrentItem(mSections.size()+1);
+                //Log.i(TAG,"notifications selected...");
                 return true;
         }
         return false;
@@ -226,5 +217,29 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     @Override
     public void onInvestigatorInteraction() {
 
+    }
+
+    public void switchRight(){
+        int i = mViewPager.getCurrentItem(); // i give the section
+
+
+        if(i > 0 && i < mSections.size() + 1){
+           for(Question q  : mSections.get(i-1).getQuestions()){
+               Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
+               if(q.getChoice().equalsIgnoreCase("")){
+                   Toast.makeText(MainActivity.this, R.string.mandatory_fields,
+                           Toast.LENGTH_LONG).show();
+                   return;
+               }
+           }
+        }
+        mViewPager.setCurrentItem(i+1);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.i(TAG,"onSaveInstanceState");
+        savedInstanceState.putSerializable(SECTIONS,mSections);
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

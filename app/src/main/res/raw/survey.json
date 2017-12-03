@@ -4,10 +4,12 @@
       "questions" :
       [
         {
-        "text":"Quel est le nom de la commune",
-        "values":["Gisuru","Kinyinya","Cendajuru"]
+          "type":"choices",
+          "text":"Quel est le nom de la commune",
+          "values":["Gisuru","Kinyinya","Cendajuru"]
         },
         {
+          "type":"choices",
           "text":"Quel est le nom de la colline?",
           "values":["Kabuyenge","Nyabigabiro"," Nkurubuye","Rubanga","Gacokwe","Bugama","Butarangira"]
         }
@@ -18,54 +20,67 @@
     "questions" :
     [
       {
+        "type":"text",
         "text":"Quel est votre nom",
         "values":[]
       },
       {
+        "type":"choices",
         "text":"Quel est votre sexe?",
         "values":["Homme","Femme"]
       },
       {
+        "type":"choices",
         "text":"Êtes-vous le chef du ménage ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"Quel lien vous uni au chef de ménage ?",
         "values":["Conjoint","Fils/Fille","Cousin/Cousine","Parent","Neveu/Nièce","Autre"]
       },
       {
+        "type":"choices",
         "text":"Femme enquêtée est conjointe du chef de ménage?",
         "values":["Oui","Non"]
       },
       {
+        "type":"text",
         "text":"Quel est le nom du chef de ménage ?",
         "values":[]
       },
       {
+        "type":"choices",
         "text":"Quel est le sexe du chef de ménage ?",
         "values":["Homme","Femme"]
       },
       {
+        "type":"choices",
         "text":"Quel est l'âge du chef de ménage ?",
         "values":["15-24","25-49","50-65","> 65"]
       },
       {
+        "type":"choices",
         "text":"Quel est le statut matrimonial du chef de ménage?(à revoir)",
         "values":["Célibataire","Marié(e)","Divorcé(e)/Séparé(e)","Veuf/Veuve"]
       },
       {
+        "type":"choices",
         "text":"En tant que femme, participez-vous aux décisions importantes du ménage ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"Quel est le niveau d'instruction du chef de ménage ?",
         "values":["Primaire","Secondaire","Professionnel"," Université","Yagamukama","Aucun"]
       },
       {
+        "type":"choices",
         "text":"Quelles sont les occupations principales du ménage ?(à revoir)",
         "values":["Agriculture","Elevage","Agriculture et élevage","Agriculture","ouvrier agricole/main d'oeuvre journalière","Salarié/Fonctionnaire","Artisanat(menuiserie,maçonnerie,production de briques/tuiles,etc)","Petits commerces","Transformation alimentaire","Incapable de travailler (inactif/Infirme/malade)"]
       },
       {
+        "type":"choices",
         "text":"Quel est le niveau d'instruction le plus élevé dans le ménage ?",
         "values":["Primaire","Secondaire","Professionnel"," Université","Yagamukama","Aucun"]
       }
@@ -76,50 +91,62 @@
       "questions" :
       [
         {
+          "type":"numeric",
           "text":"Combien de personnes vivent dans ce ménage au total?",
           "values":[]
         },
         {
+          "type":"numeric",
           "text":"Combien de personnes de sexe masculin?",
           "values":[]
         },
         {
+          "type":"numeric",
           "text":"Combien de personnes de sexe feminin?",
           "values":[]
         },
         {
+          "type":"choices",
           "text":"Quelles sont les tâches qui prennent le plus de temps aux hommes dans votre ménage ?",
           "values":["Recherche de bois","Travaux agricoles","Education","Recherche d'eau","Cuisine","Travaux agricoles"]
         },
         {
+          "type":"choices",
           "text":"Quelles sont les tâches qui prennent le plus de temps aux femmes dans votre ménage ?",
           "values":["Recherche de bois","Travaux agricoles","Education","Recherche d'eau","Cuisine","Travaux agricoles"]
         },
         {
+          "type":"numeric",
           "text":"Combien de personnes ont un âge > 65 ans ?",
           "values":[]
         },
         {
+          "type":"numeric",
           "text":"Combien de personnes ont un âge > 15 ans ?",
           "values":[]
         },
         {
+          "type":"numeric",
           "text":"Combien de personnes savent lire et écrire?",
           "values":[]
         },
         {
+          "type":"numeric",
           "text":"Combien de personnes du ménage sont scolarisées actuellement ?",
           "values":[]
         },
         {
+          "type":"choices",
           "text":"Tenez-vous une comptabilité écrite dans votre ménage ?",
           "values":["Oui","Non"]
         },
         {
+          "type":"choices",
           "text":"Possédez-vous un compte bancaire ?",
           "values":["Oui","Non"]
         },
         {
+          "type":"choices",
           "text":"Si oui, qui en est le signataire ? (Problème)",
           "values":["Homme","Femme","Les deux"]
         }
@@ -130,26 +157,32 @@
     "questions" :
     [
       {
+        "type":"choices",
         "text":"Avec quel type de matériau sont construit les mûrs de votre maison ?",
         "values":["Briques adobes","Briques cuites/blocs ciments","Pailles/bois","Pisées/potopoto"]
       },
       {
+        "type":"choices",
         "text":"De quel type est la toiture de votre maison ?",
         "values":["Tôle","Charette à traction animale","Tracteur","Moto","Voiture","Aucun"]
       },
       {
+        "type":"choices",
         "text":"De quel type est la toiture de votre maison ?",
         "values":["Tôle","Charette à traction animale","Tracteur","Moto","Voiture","Aucun"]
       },
       {
-      "text":"Votre maison dispose-t-elle d'une latrine protégée avec fosse ?",
-      "values":["Oui","Non"]
+        "type":"choices",
+        "text":"Votre maison dispose-t-elle d'une latrine protégée avec fosse ?",
+        "values":["Oui","Non"]
       },
       {
-      "text":"Avez-vous un poste récepteur (radio)?",
-      "values":["Oui","Non"]
+        "type":"choices",
+        "text":"Avez-vous un poste récepteur (radio)?",
+        "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"Quel type de véhicule possédez-vous ?",
         "values":["Vélo","Charette à traction animale","Tracteur","Moto","Voiture","Aucun"]
       }
@@ -160,110 +193,137 @@
     "questions" :
     [
       {
+        "type":"choices",
         "text":"Quelle superficie agricole exploite le ménage ?",
         "values":["moins de 0,5 ha","de plus de 1 ha à 2 ha","de 0,5 à 1 ha","plus de 2 ha"]
       },
       {
+        "type":"choices",
         "text":"Etes-vous propriétaire de la superficie agricole exploitée ?",
         "values":["Oui","Non","En partie"]
       },
       {
+        "type":"choices",
         "text":"Si 'En partie', précisez la superficie qui vous appartient ?",
         "values":["0 - 24 %","25 - 50 %","51 - 74 %","75 - 100%"]
       },
       {
+        "type":"choices",
         "text":"Cultivez-vous toute la superficie de l'exploitation en même temps ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"Si non, pourquoi ?",
         "values":["Mise en jachère","Manque de main d'oeuvre","Mise en location","Manque de semences","Terrain non cultivable","Autres"]
       },
       {
+        "type":"choices",
         "text":"Avez-vous des dispositifs de LAE dans votre exploitation ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"Quel type de LAE ?",
         "values":["Courbes de niveau","Courbes de niveau avec herbes fixatrices","Agroforesterie","Haies anti-érosives"]
       },
       {
+        "type":"choices",
         "text":"Y-a-t-il un microboisement dans votre exploitation ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"A combien estimez-vous la superficie de votre micro-boisement ?",
         "values":["moins de 0,5 ha","de plus de 1 ha à 2 ha","de 0,5 à 1 ha","plus de 2 ha"]
       },
       {
+        "type":"choices",
         "text":"Quelle est l'utilisation de ce microboisement par le ménage ?",
         "values":["Vente directe","Charbon","Consommation du ménage","Construction/Fabrication"]
       },
       {
+        "type":"choices",
         "text":"Votre ménage dispose-t-il d'un foyer amélioré ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"Dans votre exploitation utilisez-vous les produits phytosanitaires ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"Pour quelle raison n'employez-vous pas de produits phytos dans votre exploitation ?",
         "values":["Manque de produits phytos","Produits phytos nocifs","Ne connais pas","Autres"]
       },
       {
+        "type":"choices",
         "text":"Combien de fosses à compost fonctionnelles avez-vous dans votre exploitation ?",
         "values":["0","1","2","3","4","plus de 4"]
       },
       {
+        "type":"choices",
         "text":"Utilisez-vous de la fumure organique ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"Employez-vous des engrais chimiques dans votre exploitation ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"numeric",
         "text":"Combien de cultures pratiquez-vous sur votre exploitation ?",
         "values":[]
       },
       {
+        "type":"choices",
         "text":"Quelles sont les principales cultures de votre exploitation ?",
         "values":["Banane","Haricot","Maïs","Manioc","Haricot","Ananas","Palmiers à huile","Patate douce","Pois cajin","Sorgho","Maraîchage","Autres"]
       },
       {
+        "type":"choices",
         "text":"Achetez-vous des semences de qualité ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"numeric",
         "text":"Si oui, combien de types différents ?",
         "values":[]
       },
       {
+        "type":"choices",
         "text":"Si oui, quelle est la source de provenance ?",
         "values":["Boutique","DPAE","Multiplicateur","Grossiste","ONG","Autres"]
       },
       {
+        "type":"choices",
         "text":"Si non, pourquoi ?",
         "values":["Manque d'argent","Ne sais pas où s'approvisionner","Pas disponible","Utilise ses propres semences","Autres"]
       },
       {
+        "type":"choices",
         "text":"Bénéficiez-vous de l'encadrement technique des techniciens agricoles de la DPAE ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"choices",
         "text":"Lesquelles de ces pratiques agricoles appliquez-vous dans votre exploitation ?",
         "values":["Semis en ligne","Respect écartement poquets","Sarclage","Billonnage","Paillage","Respect du calendrier agricole","Autres"]
       },
       {
+        "type":"choices",
         "text":"Employez-vous des ouvriers agricoles sur votre exploitation ?",
         "values":["Oui","Non"]
       },
       {
+        "type":"numeric",
         "text":"Si 'Oui', pour combien de jours par an ?",
         "values":[]
       },
       {
+        "type":"choices",
         "text":"Quel type de gestion post-récolte et/ou conservation avez-vous ?",
         "values":["Grenier","Hangar de stockage","Vente directe","Maison"]
       }

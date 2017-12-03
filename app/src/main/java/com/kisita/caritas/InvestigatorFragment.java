@@ -70,7 +70,9 @@ public class InvestigatorFragment extends Fragment {
         mProvince     = v.findViewById(R.id.province);
 
         mDate.setText(getToday(true)); // get the date
+        mDate.clearFocus();
         mStartTime.setText(getToday(false)); // get the time
+        mStartTime.clearFocus();
 
         return v;
     }
