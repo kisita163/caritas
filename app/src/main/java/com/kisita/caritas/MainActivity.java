@@ -1,5 +1,6 @@
 package com.kisita.caritas;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -164,6 +167,10 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     public void onPublishInteraction() {
         Log.i(TAG,"Publish pressed");
         //printFinalSections();
+        //
+        if(!checkRequiredFields()){
+            return;
+        }
         String key = getDb("survey").push().getKey();
         Map<String, Object> childUpdates = new HashMap<>();
         int i = 1;
@@ -222,19 +229,35 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     public void switchRight(){
         int i = mViewPager.getCurrentItem(); // i give the section
 
-
-        if(i > 0 && i < mSections.size() + 1){
-           for(Question q  : mSections.get(i-1).getQuestions()){
-               Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
-               if(q.getChoice().equalsIgnoreCase("")){
-                   Toast.makeText(MainActivity.this, R.string.mandatory_fields,
-                           Toast.LENGTH_LONG).show();
-                   return;
-               }
-           }
+        if(checkRequiredFieldsInSection(i)){
+            mViewPager.setCurrentItem(i+1);
         }
-        mViewPager.setCurrentItem(i+1);
     }
+
+    public boolean checkRequiredFields(){
+        for(int index  = 1 ; index < mSections.size() ; index++ ){
+            if(checkRequiredFieldsInSection(index)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkRequiredFieldsInSection(int index){
+        if(index > 0 && index < mSections.size() + 1){
+            for(Question q  : mSections.get(index-1).getQuestions()){
+                Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
+                if(q.getChoice().equalsIgnoreCase("")){
+                    Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
+                    Toast.makeText(MainActivity.this, R.string.mandatory_fields,
+                            Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {

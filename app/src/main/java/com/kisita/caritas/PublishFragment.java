@@ -4,10 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 /**
@@ -19,7 +21,7 @@ import android.widget.Button;
  * create an instance of this fragment.
  */
 public class PublishFragment extends Fragment {
-
+    private final static String TAG = "PublishFragment";
     private Button mPublishButton;
     private OnPublishInteractionListener mListener;
 
@@ -61,6 +63,8 @@ public class PublishFragment extends Fragment {
 
         return v;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {

@@ -65,7 +65,7 @@ public class PlaceholderFragment extends Fragment {
         QuestionAdapter adapter = new QuestionAdapter(getContext(),sectionQuestions.getQuestions());
         recList.setAdapter(adapter);
 
-        printQuestions(sectionQuestions.getQuestions());
+        //printQuestions(sectionQuestions.getQuestions());
 
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
         textView.setText(sectionQuestions.getName());
