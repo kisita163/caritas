@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    private CaritasViewPager mViewPager;
+    private ViewPager mViewPager;
 
 
     @Override
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         setContentView(R.layout.activity_main);
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (CaritasViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.container);
         //
         if(savedInstanceState != null){
             mSections = (ArrayList<Section>) savedInstanceState.getSerializable(SECTIONS);
