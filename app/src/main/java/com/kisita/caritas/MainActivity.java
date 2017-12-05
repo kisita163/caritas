@@ -105,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         Section sec;
         String s;
 
+        // First section
+        Section first = new Section("");
+        mSections.add(first);
+        //
         try {
             jsonSurvey = new JSONArray(readSurveyFromResources());
             for (int i = 0; i < jsonSurvey.length(); i++) {
@@ -177,6 +181,12 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         int j = 1;
 
         for(Section s : mSections){
+            if(s.getName().equalsIgnoreCase("")){
+                childUpdates.put(getUid() + "/" + key + "/section_"+j+"/startTime",s.getStart());
+                childUpdates.put(getUid() + "/" + key + "/section_"+j+"/date",s.getDate());
+                childUpdates.put(getUid() + "/" + key + "/section_"+j+"/investigator",s.getInvestigator());
+                childUpdates.put(getUid() + "/" + key + "/section_"+j+"/province",s.getProvince());
+            }
             childUpdates.put(getUid() + "/" + key + "/section_"+j+"/name",s.getName());
             for(Question q : s.getQuestions()){
                 childUpdates.put(getUid() + "/" + key +  "/section_"+j+"/question"+ i +"/text" , q.getQuestion());
@@ -244,8 +254,17 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     }
 
     public boolean checkRequiredFieldsInSection(int index){
+        Log.i(TAG,"index is  : "+index + " " + (mSections.size() + 1));
+        if(index == 0){
+            Log.i(TAG,"investigator is  : "+mSections.get(index).getInvestigator());
+            if(mSections.get(index).getInvestigator().equalsIgnoreCase("")){
+                Toast.makeText(MainActivity.this, R.string.mandatory_fields,
+                        Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }
         if(index > 0 && index < mSections.size() + 1){
-            for(Question q  : mSections.get(index-1).getQuestions()){
+            for(Question q  : mSections.get(index).getQuestions()){
                 Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
                 if(q.getChoice().equalsIgnoreCase("")){
                     Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());

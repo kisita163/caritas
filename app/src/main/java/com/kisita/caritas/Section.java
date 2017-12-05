@@ -8,7 +8,18 @@ import java.util.ArrayList;
  */
 
 public class Section implements Serializable{
-    private String name;
+
+    private String name         = "";
+
+    private String date         = "";
+
+    private String investigator = "";
+
+    private String start        = "";
+
+    private String province     = "";
+
+
     private ArrayList<Question> questions = new ArrayList<>();
 
     public Section(String name){
@@ -25,5 +36,37 @@ public class Section implements Serializable{
 
     public ArrayList<Question> getQuestions() {
         return questions;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getInvestigator() {
+        return investigator;
+    }
+
+    public void setInvestigator(String investigator) {
+        this.investigator = investigator;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 }

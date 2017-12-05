@@ -3,11 +3,17 @@ package com.kisita.caritas;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatSpinner;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +38,11 @@ public class InvestigatorFragment extends Fragment {
 
     private EditText mInvestigator;
 
-    private EditText mProvince;
+    private AppCompatSpinner mProvince;
+
+    private static final String ARG_SECTION = "section";
+
+    private static final String TAG         = "InvestigatorFragment";
 
     private OnInvestigatorInteractionListener mListener;
 
@@ -46,9 +56,10 @@ public class InvestigatorFragment extends Fragment {
      *
      * @return A new instance of fragment InvestigatorFragment.
      */
-    public static InvestigatorFragment newInstance() {
+    public static InvestigatorFragment newInstance(Section sec) {
         InvestigatorFragment fragment = new InvestigatorFragment();
         Bundle args = new Bundle();
+        args.putSerializable(ARG_SECTION,(Serializable) sec);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,6 +73,7 @@ public class InvestigatorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        final Section section = (Section) getArguments().getSerializable(ARG_SECTION);
         View v = inflater.inflate(R.layout.fragment_investigator, container, false);
 
         mDate         = v.findViewById(R.id.date);
@@ -69,10 +81,44 @@ public class InvestigatorFragment extends Fragment {
         mStartTime    = v.findViewById(R.id.start_time);
         mProvince     = v.findViewById(R.id.province);
 
-        mDate.setText(getToday(true)); // get the date
-        mDate.clearFocus();
-        mStartTime.setText(getToday(false)); // get the time
-        mStartTime.clearFocus();
+        String date = getToday(true);
+        String start = getToday(false);
+        mDate.setText(date); // get the date
+        mDate.setEnabled(false);
+        section.setDate(date);
+        mStartTime.setText(start); // get the time
+        mStartTime.setEnabled(false);
+        section.setStart(start);
+
+        mInvestigator.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                section.setInvestigator(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //Log.i(TAG,"The province is "+ mProvince.getItemAtPosition(i));
+                section.setProvince(mProvince.getItemAtPosition(i).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         return v;
     }

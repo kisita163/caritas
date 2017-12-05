@@ -20,14 +20,16 @@
         android:textSize="20dp"
         android:layout_alignParentTop="true"
       />
-    <View
-        android:layout_width="match_parent"
+
+    <ImageView
         android:id="@+id/view"
-        android:layout_height="@dimen/divider"
         android:layout_below="@id/section_label"
+        android:layout_width="match_parent"
         android:layout_marginBottom="@dimen/pad_10dp"
         android:layout_marginTop="@dimen/pad_10dp"
-        android:background="@color/main_black" />
+        android:layout_height="5dp"
+        android:src="@drawable/dotted"
+        android:layerType="software" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"

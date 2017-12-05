@@ -57,7 +57,7 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
             holder.mValues.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Log.i(TAG, "item selected ..." + d.getChoices().get(i));
+                    //Log.i(TAG, "item selected ..." + d.getChoices().get(i));
                     d.setChoice(d.getChoices().get(i));
                     d.setPos(i);
                 }
@@ -106,7 +106,7 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.i(TAG,"onTextChanged" + charSequence.toString());
+                //Log.i(TAG,"onTextChanged" + charSequence.toString());
                 d.setChoice(charSequence.toString());
             }
 
