@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A login screen that offers login via email/password.
@@ -47,6 +48,8 @@ public class LoginActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        // Enabling disk persistence
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         /* Initializing FirebaseAuth instance and
            the AuthStateListener method so you can track whenever the user signs in or out.
          */
