@@ -1,6 +1,7 @@
 package com.kisita.caritas;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatSpinner;
@@ -90,6 +91,14 @@ public class InvestigatorFragment extends Fragment {
         mStartTime.setEnabled(false);
         section.setStart(start);
 
+        SharedPreferences sharedPref = getActivity()
+                .getSharedPreferences(getResources()
+                        .getString(R.string.caritas_keys), Context.MODE_PRIVATE);
+
+        mInvestigator.setText(sharedPref.getString(getString(R.string.investigator),""));
+
+        final SharedPreferences.Editor editor = sharedPref.edit();
+
         mInvestigator.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -99,6 +108,8 @@ public class InvestigatorFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 section.setInvestigator(charSequence.toString());
+                editor.putString(getString(R.string.investigator), charSequence.toString());
+                editor.commit();
             }
 
             @Override
