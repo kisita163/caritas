@@ -82,7 +82,7 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    Log.i(TAG,"onTextChanged" + charSequence.toString());
+                    //Log.i(TAG,"onTextChanged" + charSequence.toString());
                     d.setChoice(charSequence.toString());
                 }
 

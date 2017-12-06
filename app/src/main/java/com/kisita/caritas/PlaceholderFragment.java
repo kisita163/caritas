@@ -75,7 +75,7 @@ public class PlaceholderFragment extends Fragment {
 
     private void printQuestions(ArrayList<Question> questions){
         for(Question q : questions){
-            Log.i(TAG,q.getQuestion());
+            //Log.i(TAG,q.getQuestion());
         }
     }
 }

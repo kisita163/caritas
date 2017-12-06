@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
             for (int i = 0; i < jsonSurvey.length(); i++) {
                 // Get section
                 section = jsonSurvey.getJSONObject(i);
-                Log.i(TAG,"Section name is : "+ section.getString("name"));
+                //Log.i(TAG,"Section name is : "+ section.getString("name"));
                 sec     = new Section(section.getString("name"));
 
                 jsonQuestions = section.getJSONArray("questions");
@@ -146,11 +147,11 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
 
     public void printSections(){
         for(Section s : mSections){
-            Log.i(TAG,s.getName());
+            //Log.i(TAG,s.getName());
             for(Question q : s.getQuestions()){
-                Log.i(TAG,q.getQuestion());
+                //Log.i(TAG,q.getQuestion());
                 for (String c : q.getChoices()){
-                    Log.i(TAG,c);
+                    //Log.i(TAG,c);
                 }
             }
         }
@@ -159,17 +160,17 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
 
     public void printFinalSections(){
         for(Section s : mSections){
-            Log.i(TAG,s.getName());
+            //Log.i(TAG,s.getName());
             for(Question q : s.getQuestions()){
-                Log.i(TAG,q.getQuestion());
-                Log.i(TAG,"-->" + q.getChoice());
+                //Log.i(TAG,q.getQuestion());
+                //Log.i(TAG,"-->" + q.getChoice());
             }
         }
     }
 
     @Override
     public void onPublishInteraction() {
-        Log.i(TAG,"Publish pressed");
+        //Log.i(TAG,"Publish pressed");
         //printFinalSections();
         //
         if(!checkRequiredFields()){
@@ -195,7 +196,13 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
             }
             j++;
         }
-        getDb("survey").updateChildren(childUpdates);
+        getDb("survey").updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                //TODO Transactions are not persisted across app restarts
+                //Log.i(TAG,"Transactions are not persisted across app restarts");
+            }
+        });
     }
 
     public DatabaseReference getDb(String reference) {
@@ -254,9 +261,9 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     }
 
     public boolean checkRequiredFieldsInSection(int index){
-        Log.i(TAG,"index is  : "+index + " " + (mSections.size() + 1));
+        //Log.i(TAG,"index is  : "+index + " " + (mSections.size() + 1));
         if(index == 0){
-            Log.i(TAG,"investigator is  : "+mSections.get(index).getInvestigator());
+            //Log.i(TAG,"investigator is  : "+mSections.get(index).getInvestigator());
             if(mSections.get(index).getInvestigator().equalsIgnoreCase("")){
                 Toast.makeText(MainActivity.this, R.string.mandatory_fields,
                         Toast.LENGTH_LONG).show();
@@ -265,9 +272,9 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         }
         if(index > 0 && index < mSections.size() + 1){
             for(Question q  : mSections.get(index).getQuestions()){
-                Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
+                //Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
                 if(q.getChoice().equalsIgnoreCase("")){
-                    Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
+                    //Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
                     Toast.makeText(MainActivity.this, R.string.mandatory_fields,
                             Toast.LENGTH_LONG).show();
                     return false;
@@ -280,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        Log.i(TAG,"onSaveInstanceState");
+        //Log.i(TAG,"onSaveInstanceState");
         savedInstanceState.putSerializable(SECTIONS,mSections);
         super.onSaveInstanceState(savedInstanceState);
     }
