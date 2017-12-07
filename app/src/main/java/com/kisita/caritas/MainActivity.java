@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     @NonNull
     private String readSurveyFromResources() throws IOException {
         StringBuilder surveyJson = new StringBuilder();
-        InputStream rawCategories = getResources().openRawResource(R.raw.survey);
+        InputStream rawCategories = getResources().openRawResource(R.raw.survey_test);
         BufferedReader reader = new BufferedReader(new InputStreamReader(rawCategories));
         String line;
         //Log.i(TAG,"Reading line ...");
@@ -198,6 +198,9 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
             for(Question q : s.getQuestions()){
                 childUpdates.put(getUid() + "/" + key +  "/section_"+j+"/question"+ i +"/text" , q.getQuestion());
                 childUpdates.put(getUid() + "/" + key +  "/section_"+j+"/question"+ i +"/choice" , q.getChoice());
+                if(!q.getComment().equalsIgnoreCase("")){
+                    childUpdates.put(getUid() + "/" + key +  "/section_"+j+"/question"+ i +"/comment" , q.getComment());
+                }
                 i++;
             }
             j++;
@@ -284,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         }
     }
     public boolean checkRequiredFields(){
-        for(int index  = 1 ; index < mSections.size() ; index++ ){
+        for(int index  = 0 ; index < mSections.size() ; index++ ){
            if(checkRequiredFieldsInSection(index) == false){
                return false;
            }
@@ -299,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
             if(mSections.get(index).getInvestigator().equalsIgnoreCase("")){
                 Toast.makeText(MainActivity.this, R.string.mandatory_fields,
                         Toast.LENGTH_LONG).show();
+                mViewPager.setCurrentItem(index);
                 return false;
             }
         }

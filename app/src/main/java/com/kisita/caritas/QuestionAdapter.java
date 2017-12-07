@@ -40,7 +40,7 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
     }
 
     @Override
-    public void onBindViewHolder(QuestionAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final QuestionAdapter.ViewHolder holder, int position) {
         final Question d = mQuestions.get(position);
         holder.mQuestion.setText(position + 1 + ". " + d.getQuestion());
         holder.mValues.setFocusable(false);
@@ -58,8 +58,14 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     //Log.i(TAG, "item selected ..." + d.getChoices().get(i));
-                    d.setChoice(d.getChoices().get(i));
+                    String choice  = d.getChoices().get(i);
+                    d.setChoice(choice);
                     d.setPos(i);
+                    if(choice.equalsIgnoreCase("autre")){
+                        holder.mComment.setVisibility(View.VISIBLE);
+                    }else{
+                        holder.mComment.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override
@@ -116,6 +122,23 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
             }
         });
         }
+
+        holder.mComment.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                d.setComment(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override
@@ -131,6 +154,7 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
         public final TextView mQuestion;
         public final EditText mTextInput;
         public final AppCompatSpinner mValues;
+        public final EditText mComment;
 
 
         public ViewHolder(View view) {
@@ -139,6 +163,7 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
             mQuestion  = (TextView) view.findViewById(R.id.question);
             mValues    = (AppCompatSpinner)view.findViewById(R.id.values);
             mTextInput = (EditText) view.findViewById(R.id.text_input);
+            mComment   = (EditText) view.findViewById(R.id.text_comment);
         }
 
         @Override

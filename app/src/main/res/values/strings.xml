@@ -31,6 +31,7 @@
     <string name="province">Province</string>
     <string name="caritas_survey">Caritas Survey</string>
     <string name="caritas_keys">keys</string>
+    <string name="comment">Commentaire</string>
 
     <string-array name="provinces">
         <item>Bubanza</item>

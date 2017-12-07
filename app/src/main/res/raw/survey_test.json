@@ -1,17 +1,72 @@
 [
   {
-    "name" : "Localisation géographique de l'exploitation",
+    "name" : "Profil et identification du ménage ",
     "questions" :
     [
       {
-        "type":"choices",
-        "text":"Quel est le nom de la commune",
-        "values":["Gisuru","Kinyinya","Cendajuru"]
+        "type":"text",
+        "text":"Quel est votre nom",
+        "values":[]
       },
       {
         "type":"choices",
-        "text":"Quel est le nom de la colline?",
-        "values":["Kabuyenge","Nyabigabiro"," Nkurubuye","Rubanga","Gacokwe","Bugama","Butarangira"]
+        "text":"Quel est votre sexe?",
+        "values":["Homme","Femme"]
+      },
+      {
+        "type":"choices",
+        "text":"Êtes-vous le chef du ménage ?",
+        "values":["Oui","Non"]
+      },
+      {
+        "type":"choices",
+        "text":"Quel lien vous uni au chef de ménage ?",
+        "values":["Conjoint","Fils/Fille","Cousin/Cousine","Parent","Neveu/Nièce","Autre"]
+      },
+      {
+        "type":"choices",
+        "text":"Femme enquêtée est conjointe du chef de ménage?",
+        "values":["Oui","Non"]
+      },
+      {
+        "type":"text",
+        "text":"Quel est le nom du chef de ménage ?",
+        "values":[]
+      },
+      {
+        "type":"choices",
+        "text":"Quel est le sexe du chef de ménage ?",
+        "values":["Homme","Femme"]
+      },
+      {
+        "type":"choices",
+        "text":"Quel est l'âge du chef de ménage ?",
+        "values":["15-24","25-49","50-65","> 65"]
+      },
+      {
+        "type":"choices",
+        "text":"Quel est le statut matrimonial du chef de ménage?(à revoir)",
+        "values":["Célibataire","Marié(e)","Divorcé(e)/Séparé(e)","Veuf/Veuve"]
+      },
+      {
+        "type":"choices",
+        "text":"En tant que femme, participez-vous aux décisions importantes du ménage ?",
+        "values":["Oui","Non"]
+      },
+      {
+        "type":"choices",
+        "text":"Quel est le niveau d'instruction du chef de ménage ?",
+        "values":["Primaire","Secondaire","Professionnel"," Université","Yagamukama","Aucun"]
+      },
+      {
+        "type":"choices",
+        "text":"Quelles sont les occupations principales du ménage ?(à revoir)",
+        "values":["Agriculture","Elevage","Agriculture et élevage","Agriculture","ouvrier agricole/main d'oeuvre journalière","Salarié/Fonctionnaire","Artisanat(menuiserie,maçonnerie,production de briques/tuiles,etc)","Petits commerces","Transformation alimentaire","Incapable de travailler (inactif/Infirme/malade)"]
+      },
+      {
+        "type":"choices",
+        "text":"Quel est le niveau d'instruction le plus élevé dans le ménage ?",
+        "values":["Primaire","Secondaire","Professionnel"," Université","Yagamukama","Aucun"]
       }
     ]
   }

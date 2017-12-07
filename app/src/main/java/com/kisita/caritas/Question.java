@@ -17,7 +17,7 @@ public class Question implements Serializable {
     private String question;
     private ArrayList<String> choices = new ArrayList<>();
     private String choice = "";
-
+    private String comment= "";
     private int pos  = 0;
     private EntryType mEntryType = EntryType.CHOICES;
 
@@ -75,5 +75,13 @@ public class Question implements Serializable {
 
     public void setPos(int pos) {
         this.pos = pos;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }
