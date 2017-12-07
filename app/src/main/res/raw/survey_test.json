@@ -1,0 +1,18 @@
+[
+  {
+    "name" : "Localisation géographique de l'exploitation",
+    "questions" :
+    [
+      {
+        "type":"choices",
+        "text":"Quel est le nom de la commune",
+        "values":["Gisuru","Kinyinya","Cendajuru"]
+      },
+      {
+        "type":"choices",
+        "text":"Quel est le nom de la colline?",
+        "values":["Kabuyenge","Nyabigabiro"," Nkurubuye","Rubanga","Gacokwe","Bugama","Butarangira"]
+      }
+    ]
+  }
+]

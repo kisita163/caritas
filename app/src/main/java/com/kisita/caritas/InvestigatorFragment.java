@@ -87,15 +87,17 @@ public class InvestigatorFragment extends Fragment {
         mDate.setText(date); // get the date
         mDate.setEnabled(false);
         section.setDate(date);
+        section.setStart(start);
+        //Log.i(TAG,"Start time is  : " + start);
         mStartTime.setText(start); // get the time
         mStartTime.setEnabled(false);
-        section.setStart(start);
 
         SharedPreferences sharedPref = getActivity()
                 .getSharedPreferences(getResources()
                         .getString(R.string.caritas_keys), Context.MODE_PRIVATE);
-
-        mInvestigator.setText(sharedPref.getString(getString(R.string.investigator),""));
+        String investigator = sharedPref.getString(getString(R.string.investigator),"");
+        mInvestigator.setText(investigator);
+        section.setInvestigator(investigator);
 
         final SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -183,7 +185,7 @@ public class InvestigatorFragment extends Fragment {
             dateFormat = new SimpleDateFormat("HH:mm:ss");
         }
 
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         return dateFormat.format(presentTime_Date);
     }
 }

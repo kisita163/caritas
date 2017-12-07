@@ -3,6 +3,7 @@ package com.kisita.caritas;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -88,9 +90,9 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         InputStream rawCategories = getResources().openRawResource(R.raw.survey);
         BufferedReader reader = new BufferedReader(new InputStreamReader(rawCategories));
         String line;
-        Log.i(TAG,"Reading line ...");
+        //Log.i(TAG,"Reading line ...");
         while ((line = reader.readLine()) != null) {
-            Log.i(TAG,"New line  : "+line);
+            //Log.i(TAG,"New line  : "+line);
             surveyJson.append(line);
         }
         return surveyJson.toString();
@@ -169,11 +171,14 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
     }
 
     @Override
-    public void onPublishInteraction() {
+    public void onPublishInteraction(String endTime) {
         //Log.i(TAG,"Publish pressed");
         //printFinalSections();
         //
+        final Fragment publish = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.container + ":" + mViewPager.getCurrentItem());
+        ((PublishFragment)publish).showProgress(true);
         if(!checkRequiredFields()){
+            ((PublishFragment)publish).showProgress(false);
             return;
         }
         String key = getDb("survey").push().getKey();
@@ -184,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         for(Section s : mSections){
             if(s.getName().equalsIgnoreCase("")){
                 childUpdates.put(getUid() + "/" + key + "/section_"+j+"/startTime",s.getStart());
+                childUpdates.put(getUid() + "/" + key + "/section_"+j+"/endTime",endTime);
                 childUpdates.put(getUid() + "/" + key + "/section_"+j+"/date",s.getDate());
                 childUpdates.put(getUid() + "/" + key + "/section_"+j+"/investigator",s.getInvestigator());
                 childUpdates.put(getUid() + "/" + key + "/section_"+j+"/province",s.getProvince());
@@ -200,9 +206,24 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
             @Override
             public void onFailure(@NonNull Exception e) {
                 //TODO Transactions are not persisted across app restarts
+                Toast.makeText(MainActivity.this, R.string.survey_failed,
+                        Toast.LENGTH_LONG).show();
+                ((PublishFragment)publish).showProgress(false);
                 //Log.i(TAG,"Transactions are not persisted across app restarts");
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                //Log.i(TAG, "Transaction succeed");
+                mViewPager.setCurrentItem(0);
+                clearSurveyAnswers();
+                ((PublishFragment)publish).showProgress(false);
+                Toast.makeText(MainActivity.this, R.string.survey_published,
+                        Toast.LENGTH_LONG).show();
             }
         });
+
     }
 
     public DatabaseReference getDb(String reference) {
@@ -251,13 +272,24 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         }
     }
 
-    public boolean checkRequiredFields(){
-        for(int index  = 1 ; index < mSections.size() ; index++ ){
-            if(checkRequiredFieldsInSection(index)){
-                return true;
+    public void clearSurveyAnswers(){
+        for(int index  = 1 ; index < mSections.size() ; index++ ) {
+            for(Question q  : mSections.get(index).getQuestions()){
+                q.setChoice("");
+                q.setPos(0);
+                //TODO looks like notifyDataSetChanged doesn't work
+                //Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice() + " ****** " + q.getPos());
+                mSectionPagerAdapter.notifyDataSetChanged();
             }
         }
-        return false;
+    }
+    public boolean checkRequiredFields(){
+        for(int index  = 1 ; index < mSections.size() ; index++ ){
+           if(checkRequiredFieldsInSection(index) == false){
+               return false;
+           }
+        }
+        return true;
     }
 
     public boolean checkRequiredFieldsInSection(int index){
@@ -270,13 +302,15 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
                 return false;
             }
         }
-        if(index > 0 && index < mSections.size() + 1){
+        if(index > 0 && index < mSections.size()){
+            //Log.i(TAG,"Section size is  : "+mSections.size());
             for(Question q  : mSections.get(index).getQuestions()){
-                //Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
-                if(q.getChoice().equalsIgnoreCase("")){
+                //Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice() + "***"+ q.getChoice().length());
+                if(q.getChoice().equalsIgnoreCase("") || q.getChoice() == null){
                     //Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
                     Toast.makeText(MainActivity.this, R.string.mandatory_fields,
                             Toast.LENGTH_LONG).show();
+                    mViewPager.setCurrentItem(index);
                     return false;
                 }
             }

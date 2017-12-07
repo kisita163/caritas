@@ -21,12 +21,16 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="publish">Publier</string>
     <string name="mandatory_fields">Champ requis non complété</string>
+    <string name="survey_published">Enquête publiée avec succès</string>
+    <string name="survey_failed">Serveur distant non disponible. Enquête sauvegardée</string>
     <string name="choose_survey">Choisir un questionnaire</string>
     <string name="date">Date</string>
     <string name="investigator">Enquêteur</string>
     <string name="start_time">Heure début</string>
+    <string name="end_time">Heure fin</string>
     <string name="province">Province</string>
     <string name="caritas_survey">Caritas Survey</string>
+    <string name="caritas_keys">keys</string>
 
     <string-array name="provinces">
         <item>Bubanza</item>

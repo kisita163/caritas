@@ -1,7 +1,11 @@
 package com.kisita.caritas;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,7 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import static com.kisita.caritas.InvestigatorFragment.getToday;
 
 
 /**
@@ -23,6 +30,8 @@ import android.widget.Toast;
 public class PublishFragment extends Fragment {
     private final static String TAG = "PublishFragment";
     private Button mPublishButton;
+    private View mProgressView;
+    private EditText mEndTime;
     private OnPublishInteractionListener mListener;
 
     public PublishFragment() {
@@ -54,12 +63,16 @@ public class PublishFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_publish, container, false);
         mPublishButton = v.findViewById(R.id.publish_button);
+        mEndTime       = v.findViewById(R.id.end_time);
         mPublishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onButtonPressed();
+                onButtonPressed(mEndTime.getText().toString());
             }
         });
+        mEndTime.setText(getToday(false));
+        mEndTime.setEnabled(false);
+        mProgressView = v.findViewById(R.id.login_progress);
 
         return v;
     }
@@ -67,9 +80,9 @@ public class PublishFragment extends Fragment {
 
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed() {
+    public void onButtonPressed(String endTime) {
         if (mListener != null) {
-            mListener.onPublishInteraction();
+            mListener.onPublishInteraction(endTime);
         }
     }
 
@@ -101,6 +114,29 @@ public class PublishFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnPublishInteractionListener {
-        void onPublishInteraction();
+        void onPublishInteraction(String endTime);
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        //Log.i(TAG,"Progress called " + show);
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        mPublishButton.setVisibility(show ? View.GONE : View.VISIBLE);
+
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mProgressView.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 }
