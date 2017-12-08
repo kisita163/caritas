@@ -4,67 +4,80 @@
     "questions" :
     [
       {
-        "type":"text",
-        "text":"Quel est votre nom",
+        "mandatory":"0",
+        "answerType":"text",
+        "text":"Quel est votre nom ?",
         "values":[]
       },
       {
-        "type":"choices",
+        "mandatory":"1",
+        "answerType":"choices",
         "text":"Quel est votre sexe?",
         "values":["Homme","Femme"]
       },
       {
-        "type":"choices",
+        "mandatory":"0",
+        "answerType":"choices",
         "text":"Êtes-vous le chef du ménage ?",
         "values":["Oui","Non"]
       },
       {
-        "type":"choices",
+        "mandatory":"1",
+        "answerType":"choices",
         "text":"Quel lien vous uni au chef de ménage ?",
         "values":["Conjoint","Fils/Fille","Cousin/Cousine","Parent","Neveu/Nièce","Autre"]
       },
       {
-        "type":"choices",
+        "mandatory":"0",
+        "answerType":"choices",
         "text":"Femme enquêtée est conjointe du chef de ménage?",
         "values":["Oui","Non"]
       },
       {
-        "type":"text",
+        "mandatory":"1",
+        "answerType":"text",
         "text":"Quel est le nom du chef de ménage ?",
         "values":[]
       },
       {
-        "type":"choices",
+        "mandatory":"0",
+        "answerType":"choices",
         "text":"Quel est le sexe du chef de ménage ?",
         "values":["Homme","Femme"]
       },
       {
-        "type":"choices",
+        "mandatory":"1",
+        "answerType":"choices",
         "text":"Quel est l'âge du chef de ménage ?",
         "values":["15-24","25-49","50-65","> 65"]
       },
       {
-        "type":"choices",
+        "mandatory":"0",
+        "answerType":"choices",
         "text":"Quel est le statut matrimonial du chef de ménage?(à revoir)",
         "values":["Célibataire","Marié(e)","Divorcé(e)/Séparé(e)","Veuf/Veuve"]
       },
       {
-        "type":"choices",
+        "mandatory":"1",
+        "answerType":"choices",
         "text":"En tant que femme, participez-vous aux décisions importantes du ménage ?",
         "values":["Oui","Non"]
       },
       {
-        "type":"choices",
+        "mandatory":"0",
+        "answerType":"choices",
         "text":"Quel est le niveau d'instruction du chef de ménage ?",
         "values":["Primaire","Secondaire","Professionnel"," Université","Yagamukama","Aucun"]
       },
       {
-        "type":"choices",
+        "mandatory":"1",
+        "answerType":"choices",
         "text":"Quelles sont les occupations principales du ménage ?(à revoir)",
         "values":["Agriculture","Elevage","Agriculture et élevage","Agriculture","ouvrier agricole/main d'oeuvre journalière","Salarié/Fonctionnaire","Artisanat(menuiserie,maçonnerie,production de briques/tuiles,etc)","Petits commerces","Transformation alimentaire","Incapable de travailler (inactif/Infirme/malade)"]
       },
       {
-        "type":"choices",
+        "mandatory":"0",
+        "answerType":"choices",
         "text":"Quel est le niveau d'instruction le plus élevé dans le ménage ?",
         "values":["Primaire","Secondaire","Professionnel"," Université","Yagamukama","Aucun"]
       }

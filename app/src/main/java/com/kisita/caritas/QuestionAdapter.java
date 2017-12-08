@@ -1,12 +1,13 @@
 package com.kisita.caritas;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,12 +41,18 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
     }
 
     @Override
-    public void onBindViewHolder(final QuestionAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Question d = mQuestions.get(position);
         holder.mQuestion.setText(position + 1 + ". " + d.getQuestion());
         holder.mValues.setFocusable(false);
 
-        if(d.getEntryType().equals(Question.EntryType.CHOICES)) {
+        if(d.isMandatory()){
+            holder.mQuestion.setText(position + 1 + ". " + d.getQuestion() + " " + mContext.getString(R.string.required));
+        }else{
+            holder.mQuestion.setText(position + 1 + ". " + d.getQuestion());
+        }
+
+        if(d.getEntryType().equals(Question.AnswerType.CHOICES)) {
             holder.mTextInput.setVisibility(View.GONE);
             holder.mValues.setVisibility(View.VISIBLE);
             //Spinner
@@ -53,7 +60,6 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             holder.mValues.setAdapter(adapter);
             holder.mValues.setSelection(d.getPos());
-
             holder.mValues.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -75,7 +81,7 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
             });
         }
 
-        if(d.getEntryType().equals(Question.EntryType.TEXT)){
+        if(d.getEntryType().equals(Question.AnswerType.TEXT)){
             holder.mValues.setVisibility(View.GONE);
             holder.mTextInput.setVisibility(View.VISIBLE);
             holder.mTextInput.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -99,7 +105,7 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
             });
         }
 
-        if(d.getEntryType().equals(Question.EntryType.NUMERIC)){
+        if(d.getEntryType().equals(Question.AnswerType.NUMERIC)){
             holder.mValues.setVisibility(View.GONE);
             holder.mTextInput.setVisibility(View.VISIBLE);
             holder.mTextInput.setInputType(InputType.TYPE_CLASS_NUMBER);

@@ -8,18 +8,19 @@ import java.util.ArrayList;
  */
 
 public class Question implements Serializable {
-    public  enum EntryType{
+    public  enum AnswerType {
         CHOICES,
         MULTIPLE_CHOICES,
         NUMERIC,
         TEXT
     }
-    private String question;
+    private boolean mandatory         = false;
+    private String  question          = "";
     private ArrayList<String> choices = new ArrayList<>();
-    private String choice = "";
-    private String comment= "";
-    private int pos  = 0;
-    private EntryType mEntryType = EntryType.CHOICES;
+    private String choice             = "";
+    private String comment            = "";
+    private int pos                   = 0;
+    private AnswerType mAnswerType    = AnswerType.CHOICES;
 
     public Question(String question) {
         this.question = question;
@@ -45,26 +46,26 @@ public class Question implements Serializable {
         return choice;
     }
 
-    public EntryType getEntryType() {
-        return mEntryType;
+    public AnswerType getEntryType() {
+        return mAnswerType;
     }
 
     public void setEntryType(String type) {
         switch (type.toLowerCase()){
             case "numeric":
-                this.mEntryType = EntryType.NUMERIC;
+                this.mAnswerType = AnswerType.NUMERIC;
                 break;
             case "text":
-                this.mEntryType = EntryType.TEXT;
+                this.mAnswerType = AnswerType.TEXT;
                 break;
             case "multiple choices":
-                this.mEntryType = EntryType.MULTIPLE_CHOICES;
+                this.mAnswerType = AnswerType.MULTIPLE_CHOICES;
                 break;
             case "choices":
-                this.mEntryType = EntryType.CHOICES;
+                this.mAnswerType = AnswerType.CHOICES;
                 break;
             default:
-                this.mEntryType = EntryType.CHOICES;
+                this.mAnswerType = AnswerType.CHOICES;
                 break;
         }
     }
@@ -83,5 +84,17 @@ public class Question implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public boolean isMandatory() {
+        return mandatory;
+    }
+
+    public void setMandatory(boolean mandatory) {
+        this.mandatory = mandatory;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
     }
 }

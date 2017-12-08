@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         JSONObject question;
         JSONArray  values   = null;
         Section sec;
-        String s;
 
         // First section
         Section first = new Section("");
@@ -127,7 +126,10 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
                     question = jsonQuestions.getJSONObject(k);
                     // Get Question object
                     q  = new Question(question.getString("text"));
-                    q.setEntryType(question.getString("type"));
+                    q.setEntryType(question.getString("answerType"));
+                    if(question.getString("mandatory").equalsIgnoreCase("1")){
+                        q.setMandatory(true);
+                    }
                     values = question.getJSONArray("values");
                     q.addChoice("");
                     for(int j = 1; j <= values.length() ; j++){
@@ -310,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
             //Log.i(TAG,"Section size is  : "+mSections.size());
             for(Question q  : mSections.get(index).getQuestions()){
                 //Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice() + "***"+ q.getChoice().length());
-                if(q.getChoice().equalsIgnoreCase("") || q.getChoice() == null){
+                if(q.getChoice().equalsIgnoreCase("") && q.isMandatory()){
                     //Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice());
                     Toast.makeText(MainActivity.this, R.string.mandatory_fields,
                             Toast.LENGTH_LONG).show();
