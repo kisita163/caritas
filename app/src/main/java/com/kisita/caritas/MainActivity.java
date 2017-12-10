@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         JSONObject section;
         JSONObject question;
         JSONArray  values   = null;
+        JSONArray  inChoices   = null;
+        JSONObject inValues   = null;
         Section sec;
 
         // First section
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
             for (int i = 0; i < jsonSurvey.length(); i++) {
                 // Get section
                 section = jsonSurvey.getJSONObject(i);
-                //Log.i(TAG,"Section name is : "+ section.getString("name"));
+                Log.i(TAG,"Section name is : "+ section.getString("name"));
                 sec     = new Section(section.getString("name"));
 
                 jsonQuestions = section.getJSONArray("questions");
@@ -130,12 +132,34 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
                     if(question.getString("mandatory").equalsIgnoreCase("1")){
                         q.setMandatory(true);
                     }
+
                     values = question.getJSONArray("values");
-                    q.addChoice("");
-                    for(int j = 1; j <= values.length() ; j++){
-                        //Log.i(TAG,"value "+ j +" : "+ values.get(j));
-                        q.addChoice(values.get(j-1).toString());
+
+                    if(question.has("dependsOn")){
+                        Log.i(TAG, "depends on ....."+ question.getString("dependsOn"));
+                        q.setDependsOn(question.getString("dependsOn"));
                     }
+
+                    if(question.has("influenceOn")){
+                        Log.i(TAG, "influence on ....."+ question.getString("influenceOn"));
+                        q.setInfluenceOn(question.getString("influenceOn"));
+                    }
+
+                    for(int j = 0; j < values.length() ; j++){
+                        Log.i(TAG,"values length is : "+ values.length());
+                        ArrayList<String> choices = new ArrayList<>();
+                        choices.add("");
+                        inValues  = values.getJSONObject(j);
+                        inChoices = inValues.getJSONArray("choices");
+                        for (int v = 0 ; v < inChoices.length() ; v++){
+                            Log.i(TAG,"Choice is : "+ inChoices.get(v).toString());
+                            choices.add(inChoices.get(v).toString());
+                        }
+                        //Log.i(TAG,"value "+ j +" : "+ values.get(j));
+                        //q.addChoice(values.get(j-1).toString());
+                        q.addChoice(choices);
+                    }
+
                     sec.addNewQuestion(q);
                 }
                 mSections.add(sec);
@@ -154,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
             //Log.i(TAG,s.getName());
             for(Question q : s.getQuestions()){
                 //Log.i(TAG,q.getQuestion());
-                for (String c : q.getChoices()){
+                for (ArrayList c : q.getChoices()){
                     //Log.i(TAG,c);
                 }
             }

@@ -1,5 +1,7 @@
 package com.kisita.caritas;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,6 +10,8 @@ import java.util.ArrayList;
  */
 
 public class Question implements Serializable {
+    private static final String TAG = "Question";
+
     public  enum AnswerType {
         CHOICES,
         MULTIPLE_CHOICES,
@@ -16,11 +20,19 @@ public class Question implements Serializable {
     }
     private boolean mandatory         = false;
     private String  question          = "";
-    private ArrayList<String> choices = new ArrayList<>();
+    private ArrayList<ArrayList<String>> choices = new ArrayList<>(); // array of array
     private String choice             = "";
     private String comment            = "";
+    // Current position in spinner
     private int pos                   = 0;
+    // Last position selected
+    private int lastPos               = 0;
+    // Expected type of answer
     private AnswerType mAnswerType    = AnswerType.CHOICES;
+    private String dependsOn          = "";
+    private String influenceOn        = "";
+    private int    choicesSet         = 0;
+
 
     public Question(String question) {
         this.question = question;
@@ -30,7 +42,7 @@ public class Question implements Serializable {
         this.choice = choice;
     }
 
-    public void addChoice(String choice) {
+    public void addChoice(ArrayList<String> choice) {
         this.choices.add(choice);
     }
 
@@ -38,7 +50,7 @@ public class Question implements Serializable {
         return question;
     }
 
-    public ArrayList<String> getChoices() {
+    public ArrayList<ArrayList<String>> getChoices() {
         return choices;
     }
 
@@ -94,7 +106,53 @@ public class Question implements Serializable {
         this.mandatory = mandatory;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public String getDependsOn() {
+        return dependsOn;
+    }
+
+    public void setDependsOn(String dependsOn) {
+        this.dependsOn = dependsOn;
+    }
+
+    public String getInfluenceOn() {
+        return influenceOn;
+    }
+
+    public void setInfluenceOn(String influenceOn) {
+        this.influenceOn = influenceOn;
+    }
+
+    public void setDependingQuestion(ArrayList<String> questions , ArrayList<Question> mQuestions,QuestionAdapter adapter){
+        Log.i(TAG,"setDependingQuestion " + choice.toString());
+
+        //
+        //    int inf = Integer.parseInt(zz);
+        //    Log.i(TAG,"zz = "+inf+ " length = "+mQuestions.size());
+        //    Log.i(TAG, "item selected ... influence  on   : " + mQuestions.get(inf - 1).getQuestion() + " selected is  : " + mQuestions.get(inf - 1).getPos() );
+        //d.setDependingQuestion(mQuestions.get(inf - 1),QuestionAdapter.this);
+        //}
+        if(!choice.equalsIgnoreCase("")){
+            Log.i(TAG,"lastPos - Pos " + lastPos + " " + pos);
+            if(lastPos != pos) {
+                for(String zz : questions) {
+
+                    int inf = Integer.parseInt(zz);
+
+                    Log.i(TAG, mQuestions.get(inf - 1).getQuestion() + " " + mQuestions.get(inf - 1).getChoices().get(this.getPos() - 1));
+                    mQuestions.get(inf - 1).setChoicesSet(this.getPos() - 1);
+                    mQuestions.get(inf - 1).setPos(0);
+                    adapter.notifyDataSetChanged();
+                }
+                lastPos = pos;
+            }
+        }
+    }
+
+    public int getChoicesSet() {
+        return choicesSet;
+    }
+
+    public void setChoicesSet(int choicesSet) {
+        this.choicesSet = choicesSet;
     }
 }

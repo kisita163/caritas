@@ -35,11 +35,11 @@
     <string name="required">( Obligatoire )</string>
 
     <string-array name="provinces">
-        <item>Bubanza</item>
+        <!--<item>Bubanza</item>
         <item>Bujumbura Mairie</item>
-        <item>Bujumbura rural</item>
+        <item>Bujumbura rural</item>-->
         <item>Cankuzo</item>
-        <item>Cibitoke</item>
+        <!--<item>Cibitoke</item>
         <item>Gitega</item>
         <item>Karuzi</item>
         <item>Kayanza</item>
@@ -50,7 +50,7 @@
         <item>Mwaro</item>
         <item>Ngozi</item>
         <item>Rumonge</item>
-        <item>Rutana</item>
+        <item>Rutana</item>-->
         <item>Ruyigi</item>
     </string-array>
 </resources>

@@ -1,13 +1,12 @@
 package com.kisita.caritas;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /*
  * Created by HuguesKi on 01-12-17.
@@ -56,17 +56,33 @@ public class QuestionAdapter extends RecyclerView.Adapter< QuestionAdapter.ViewH
             holder.mTextInput.setVisibility(View.GONE);
             holder.mValues.setVisibility(View.VISIBLE);
             //Spinner
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, d.getChoices());
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, d.getChoices().get(d.getChoicesSet()));
+
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             holder.mValues.setAdapter(adapter);
             holder.mValues.setSelection(d.getPos());
             holder.mValues.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    //Log.i(TAG, "item selected ..." + d.getChoices().get(i));
-                    String choice  = d.getChoices().get(i);
+                    Log.i(TAG, "item selected ..." + d.getChoices().get(d.getChoicesSet()).get(i));
+                    String choice  = d.getChoices().get(d.getChoicesSet()).get(i);
+                    // Set the choices
                     d.setChoice(choice);
+                    // Set the position of the current choice  from the choice list
+                    // It will help to set properly the spinner when we create it again
                     d.setPos(i);
+                    //Log.i(TAG, "item selected ... depends on : " + d.getDependsOn());
+                    if(!d.getInfluenceOn().equalsIgnoreCase("")){
+                        ArrayList<String> questions =
+                                new ArrayList<String>(Arrays.asList(d.getInfluenceOn().split(",")));
+                        d.setDependingQuestion(questions,mQuestions,QuestionAdapter.this);
+                    }
+
+                    /*if(!d.getDependsOn().equalsIgnoreCase("")){
+                        int inf = Integer.valueOf(d.getDependsOn());
+                        Log.i(TAG, "item selected ... The question depends on   : " + mQuestions.get(inf - 1).getQuestion() + " selected is  : " + mQuestions.get(inf - 1).getPos() );
+                    }*/
+
                     if(choice.equalsIgnoreCase("autre")){
                         holder.mComment.setVisibility(View.VISIBLE);
                     }else{
