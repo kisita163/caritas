@@ -47,6 +47,10 @@ public class InvestigatorFragment extends Fragment {
 
     private OnInvestigatorInteractionListener mListener;
 
+    private String date;
+
+    private String start;
+
     public InvestigatorFragment() {
         // Required empty public constructor
     }
@@ -74,6 +78,7 @@ public class InvestigatorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.i(TAG,"onCreateView  ");
         final Section section = (Section) getArguments().getSerializable(ARG_SECTION);
         View v = inflater.inflate(R.layout.fragment_investigator, container, false);
 
@@ -82,19 +87,25 @@ public class InvestigatorFragment extends Fragment {
         mStartTime    = v.findViewById(R.id.start_time);
         mProvince     = v.findViewById(R.id.province);
 
-        String date = getToday(true);
-        String start = getToday(false);
+        SharedPreferences sharedPref = getActivity()
+                .getSharedPreferences(getResources()
+                        .getString(R.string.caritas_keys), Context.MODE_PRIVATE);
+
+        date  = sharedPref.getString(getResources().getString(R.string.start_date_key),"");
+        start = sharedPref.getString(getResources().getString(R.string.start_time_key),"");
+
+        Log.i(TAG,"" + date + " " + start);
+
+
         mDate.setText(date); // get the date
         mDate.setEnabled(false);
         section.setDate(date);
         section.setStart(start);
+        Log.i(TAG,"Section Start time is  : " + section.getStart());
         //Log.i(TAG,"Start time is  : " + start);
-        mStartTime.setText(start); // get the time
+        mStartTime.setText(start);
         mStartTime.setEnabled(false);
 
-        SharedPreferences sharedPref = getActivity()
-                .getSharedPreferences(getResources()
-                        .getString(R.string.caritas_keys), Context.MODE_PRIVATE);
         String investigator = sharedPref.getString(getString(R.string.investigator),"");
         mInvestigator.setText(investigator);
         section.setInvestigator(investigator);
@@ -187,5 +198,12 @@ public class InvestigatorFragment extends Fragment {
 
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         return dateFormat.format(presentTime_Date);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mStartTime.setText(start);
+        mDate.setText(date);
     }
 }

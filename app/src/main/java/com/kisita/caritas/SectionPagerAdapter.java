@@ -44,6 +44,11 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public int getCount() {
         if(survey == null)
             return 0;

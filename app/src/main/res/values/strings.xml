@@ -33,6 +33,9 @@
     <string name="caritas_keys">keys</string>
     <string name="comment">Commentaire</string>
     <string name="required">( Obligatoire )</string>
+    <string name="start_date">date</string>
+    <string name="start_date_key">date_key</string>
+    <string name="start_time_key">time_key</string>
 
     <string-array name="provinces">
         <!--<item>Bubanza</item>

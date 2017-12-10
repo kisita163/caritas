@@ -1,6 +1,7 @@
 package com.kisita.caritas;
 
-import android.os.Build;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -10,8 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,6 +30,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.kisita.caritas.InvestigatorFragment.getToday;
 
 public class MainActivity extends AppCompatActivity implements PublishFragment.OnPublishInteractionListener, BottomNavigationView.OnNavigationItemSelectedListener, InvestigatorFragment.OnInvestigatorInteractionListener {
 
@@ -78,6 +79,21 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
         mViewPager.setAdapter(mSectionPagerAdapter);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
+
+        setStartDateTime();
+    }
+
+    private void setStartDateTime() {
+        Log.i(TAG,"setStartDateTime");
+        SharedPreferences sharedPref = getSharedPreferences(getResources()
+                        .getString(R.string.caritas_keys), Context.MODE_PRIVATE);
+        String date = getToday(true);
+        String time = getToday(false);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.start_date_key), date);
+        editor.putString(getString(R.string.start_time_key), time);
+        editor.commit();
     }
 
     /**
@@ -231,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
             }
             j++;
         }
+        setStartDateTime();
         getDb("survey").updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -252,7 +269,6 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
                         Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     public DatabaseReference getDb(String reference) {
@@ -308,9 +324,9 @@ public class MainActivity extends AppCompatActivity implements PublishFragment.O
                 q.setPos(0);
                 //TODO looks like notifyDataSetChanged doesn't work
                 //Log.i(TAG,"Question : "+q.getQuestion()+" - choice is  : " + q.getChoice() + " ****** " + q.getPos());
-                mSectionPagerAdapter.notifyDataSetChanged();
             }
         }
+        mSectionPagerAdapter.notifyDataSetChanged();
     }
     public boolean checkRequiredFields(){
         for(int index  = 0 ; index < mSections.size() ; index++ ){
